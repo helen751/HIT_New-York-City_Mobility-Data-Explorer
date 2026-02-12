@@ -30,6 +30,7 @@ def load_data():
 
 
 
+# STEP 2: Clean trip data
 
 def clean_trips(trips):
     print("Cleaning trip data...")
@@ -134,7 +135,7 @@ def process_spatial_data(taxi_zones):
     # Keep only relevant fields
     taxi_zones = taxi_zones[["LocationID", "borough", "zone", "geometry"]]
 
-    # Ensure consistent CRS (optional)
+    # Ensure consistent CRS
     taxi_zones = taxi_zones.to_crs(epsg=4326)
 
     # Save as GeoJSON for frontend use
