@@ -38,12 +38,8 @@ def clean_trips(trips):
 
     # Convert datetime columns from strings to datetime objects, coercing errors to NaT
 
-    trips["tpep_pickup_datetime"] = pd.to_datetime(
-        trips["tpep_pickup_datetime"], errors="coerce"
-    )
-    trips["tpep_dropoff_datetime"] = pd.to_datetime(
-        trips["tpep_dropoff_datetime"], errors="coerce"
-    )
+    trips["tpep_pickup_datetime"] = pd.to_datetime( trips["tpep_pickup_datetime"], errors="coerce")
+    trips["tpep_dropoff_datetime"] = pd.to_datetime( trips["tpep_dropoff_datetime"], errors="coerce")
 
     trips = trips.dropna(subset=["tpep_pickup_datetime", "tpep_dropoff_datetime"])
 
@@ -56,10 +52,7 @@ def clean_trips(trips):
 
     # Calculating Trip duration (rounded to 2 decimals)
 
-    trips["trip_duration_min"] = (
-        (trips["tpep_dropoff_datetime"] - trips["tpep_pickup_datetime"])
-        .dt.total_seconds() / 60
-    ).round(2)
+    trips["trip_duration_min"] = ( (trips["tpep_dropoff_datetime"] - trips["tpep_pickup_datetime"]) .dt.total_seconds() / 60).round(2)
 
     # Logical filters
 
@@ -84,18 +77,10 @@ def engineer_features(trips):
     print("Engineering features...")
 
     # Average speed (rounded to 2 decimals)
-    trips["avg_speed_mph"] = np.where(
-        trips["trip_duration_min"] > 0,
-        (trips["trip_distance"] / (trips["trip_duration_min"] / 60)).round(2),
-        0
-    )
+    trips["avg_speed_mph"] = np.where( trips["trip_duration_min"] > 0, (trips["trip_distance"] / (trips["trip_duration_min"] / 60)).round(2), 0)
 
     # Fare per mile (rounded to 2 decimals)
-    trips["fare_per_mile"] = np.where(
-        trips["trip_distance"] > 0,
-        (trips["fare_amount"] / trips["trip_distance"]).round(2),
-        0
-    )
+    trips["fare_per_mile"] = np.where( trips["trip_distance"] > 0, (trips["fare_amount"] / trips["trip_distance"]).round(2), 0)
 
     print("Feature engineering completed.")
     return trips
