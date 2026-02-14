@@ -6,24 +6,34 @@ import os
 
 # Paths to data files
 
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
 TRIP_DATA_PATH = "backend/data/yellow_tripdata_2019-01.csv" 
 ZONE_LOOKUP_PATH = "backend/data/taxi_zone_lookup.csv"
 TAXI_ZONES_PATH = "backend/data/taxi_zones.zip"
 
-os.makedirs("backend/processed", exist_ok=True)
-os.makedirs("backend/logs", exist_ok=True)
+PROCESSED_DIR = os.path.join(base_dir, "processed")
+LOG_DIR = os.path.join(base_dir, "logs")
+
+os.makedirs(PROCESSED_DIR, exist_ok=True)
+os.makedirs(LOG_DIR, exist_ok=True)
 
 
 # STEP 1: load datasets
 
 def load_data():
     print("Loading datasets...")
+    try:
+        trips = pd.read_csv(TRIP_DATA_PATH)
+        zone_lookup = pd.read_csv(ZONE_LOOKUP_PATH)
+        # Load shapefile from zip
+        taxi_zones = gpd.read_file(TAXI_ZONES_PATH)
 
-    trips = pd.read_csv(TRIP_DATA_PATH)
-    zone_lookup = pd.read_csv(ZONE_LOOKUP_PATH)
+    except FileNotFoundError as e:
+        print("Error: One or more data files are missing.")
+        print(e)
+        return None, None, None
 
-    # Load shapefile from zip
-    taxi_zones = gpd.read_file(TAXI_ZONES_PATH)
 
     print("Datasets loaded successfully.")
     return trips, zone_lookup, taxi_zones
@@ -73,7 +83,9 @@ def clean_trips(trips):
 
     cleaned_count = len(trips)
 
-    with open("backend/logs/cleaning_log.txt", "w") as f:
+    log_path = os.path.join(LOG_DIR, "cleaning_log.txt")
+
+    with open(log_path, "w") as f:
         f.write(f"Original: {original_count}\n")
         f.write(f"Cleaned: {cleaned_count}\n")
         f.write(f"Removed: {original_count - cleaned_count}\n")
@@ -153,7 +165,8 @@ def process_spatial_data(taxi_zones):
     taxi_zones = taxi_zones.to_crs(epsg=4326)
 
     # Save as GeoJSON for frontend use
-    taxi_zones.to_file("backend/processed/taxi_zones.geojson", driver="GeoJSON")
+    geojson_path = os.path.join(PROCESSED_DIR, "taxi_zones.geojson")
+    taxi_zones.to_file(geojson_path, driver="GeoJSON")
 
     print("Spatial data processed and exported.")
     return taxi_zones
@@ -162,7 +175,8 @@ def process_spatial_data(taxi_zones):
 # STEP 6: Save cleaned and enriched trip data
 
 def save_output(trips):
-    trips.to_csv("backend/processed/cleaned_trips.csv", index=False)
+    output_path = os.path.join(PROCESSED_DIR, "cleaned_trips.csv")
+    trips.to_csv(output_path, index=False)
     print("Cleaned trips saved.")
 
 
@@ -170,6 +184,10 @@ def save_output(trips):
 
 def main():
     trips, zone_lookup, taxi_zones = load_data()
+
+    if trips is None:
+        print("Pipeline stopped due to missing files.")
+        return
 
     trips = clean_trips(trips)
 
