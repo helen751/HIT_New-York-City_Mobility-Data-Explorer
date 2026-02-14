@@ -89,6 +89,10 @@ def engineer_features(trips):
 
     # Average speed (rounded to 2 decimals)
     trips["avg_speed_mph"] = np.where( trips["trip_duration_min"] > 0, (trips["trip_distance"] / (trips["trip_duration_min"] / 60)).round(2), 0)
+    
+    # Remove unrealistic speeds 
+    trips = trips[(trips["avg_speed_mph"] >= 1) & (trips["avg_speed_mph"] <= 80)]
+
 
     # Fare per mile (rounded to 2 decimals)
     trips["fare_per_mile"] = np.where( trips["trip_distance"] > 0, (trips["fare_amount"] / trips["trip_distance"]).round(2), 0)
