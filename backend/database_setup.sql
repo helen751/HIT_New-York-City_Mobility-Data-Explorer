@@ -107,4 +107,3 @@ CREATE TABLE IF NOT EXISTS trips (
     INDEX idx_trips_pickup_location (pickup_location_id),
     INDEX idx_trips_dropoff_location (dropoff_location_id)
 ) ENGINE=InnoDB;
-

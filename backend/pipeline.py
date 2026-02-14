@@ -8,9 +8,9 @@ import os
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-TRIP_DATA_PATH = "backend/data/yellow_tripdata_2019-01.csv" 
-ZONE_LOOKUP_PATH = "backend/data/taxi_zone_lookup.csv"
-TAXI_ZONES_PATH = "backend/data/taxi_zones.zip"
+TRIP_DATA_PATH = os.path.join(base_dir,"data/yellow_tripdata_2019-01.csv")
+ZONE_LOOKUP_PATH = os.path.join(base_dir,"data/taxi_zone_lookup.csv")
+TAXI_ZONES_PATH = os.path.join(base_dir,"data/taxi_zones.zip")
 
 PROCESSED_DIR = os.path.join(base_dir, "processed")
 LOG_DIR = os.path.join(base_dir, "logs")
