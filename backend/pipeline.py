@@ -49,7 +49,17 @@ def clean_trips(trips):
     if "congestion_surcharge" in trips.columns:
         trips = trips.drop(columns=["congestion_surcharge"])
 
-    trips = trips.drop_duplicates()
+    # Remove logical duplicates based on key trip identifiers
+    duplicate_cols = [
+        "VendorID",
+        "tpep_pickup_datetime",
+        "tpep_dropoff_datetime",
+        "PULocationID",
+        "DOLocationID"
+    ]
+
+    trips = trips.drop_duplicates(subset=duplicate_cols)
+
 
     # Calculating Trip duration (rounded to 2 decimals)
 
