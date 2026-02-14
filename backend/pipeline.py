@@ -59,7 +59,7 @@ def clean_trips(trips):
 
     trips = trips[(trips["trip_duration_min"] > 0) & (trips["trip_duration_min"] < 600)]
     trips = trips[trips["trip_distance"] > 0]
-    trips = trips[trips["fare_amount"] >= 0]
+    trips = trips[trips["fare_amount"] > 0]
 
     cleaned_count = len(trips)
 
