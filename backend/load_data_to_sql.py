@@ -52,8 +52,8 @@ cursor = conn.cursor()
 print("Database connection successful. Time started...\n")
 
 overall_start = time.time()
-# Reading the CSV file into a pandas DataFrame
 
+# Reading the CSV file into a pandas DataFrame
 print("The data file is too large, we will load in chunks to optimize your computer memory")
 print("Now loading CSV data in chunks...\n")
 
@@ -128,6 +128,7 @@ for rate in rate_codes:
 
 # ==== Starting the insertion process ====
 start_time = time.time()
+
 # Inserting to vendors table first
 vendor_values = [(int(v),) for v in vendors]
 cursor.executemany(
@@ -165,6 +166,7 @@ conn.commit()
 
 print(f"Relational tables populated under {time.time() - start_time:.2f} seconds. Building locations...\n")
 
+# starting the timer for location insertion
 start_time = time.time()
 
 # building a dictionary to map location and optimize for O(1) lookups
@@ -254,10 +256,12 @@ trip_time = time.time() - start_time
 cursor.execute("SELECT COUNT(*) FROM trips")
 trip_count = cursor.fetchone()[0]
 
+# Final output summary of the operation results
 print("Data successfully loaded into MySQL.\n\n")
 print(f"\tTotal number of trips inserted: {trip_count}")
 print("\tTime used for Trip insertion:", round(trip_time, 2), "seconds")
 print("\tTotal Time Used:", round(time.time() - overall_start, 2), "seconds\n\n")
 
+# closing the database connection
 cursor.close()
 conn.close() 
