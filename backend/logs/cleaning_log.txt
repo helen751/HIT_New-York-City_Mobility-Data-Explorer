@@ -2,3 +2,5 @@ Original: 7667792
 Cleaned: 7580693
 Removed: 87099
 Removed due to unrealistic speed: 9311
+Total removed: 96410
+Final dataset size: 7571382

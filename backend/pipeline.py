@@ -85,13 +85,16 @@ def clean_trips(trips):
 
     log_path = os.path.join(LOG_DIR, "cleaning_log.txt")
 
+    removed_cleaning = original_count - cleaned_count
+
+
     with open(log_path, "w") as f:
         f.write(f"Original: {original_count}\n")
         f.write(f"Cleaned: {cleaned_count}\n")
         f.write(f"Removed: {original_count - cleaned_count}\n")
 
     print("Trip cleaning completed.")
-    return trips
+    return trips, original_count, removed_cleaning
 
 
 # STEP 3: Feature engineering
@@ -197,14 +200,18 @@ def main():
         print("Pipeline stopped due to missing files.")
         return
 
-    trips = clean_trips(trips)
+    trips, original_count, removed_cleaning = clean_trips(trips)
 
     trips, speed_removed = engineer_features(trips)
+
+    final_count = len(trips)
+    total_removed = removed_cleaning + speed_removed
 
     # Added removed speed log to cleaning log
     with open(os.path.join(LOG_DIR, "cleaning_log.txt"), "a") as f:
         f.write(f"Removed due to unrealistic speed: {speed_removed}\n")
-
+        f.write(f"Total removed: {total_removed}\n")
+        f.write(f"Final dataset size: {final_count}\n")
 
     trips = integrate_lookup(trips, zone_lookup)
 
