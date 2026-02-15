@@ -101,16 +101,24 @@ def engineer_features(trips):
 
     # Average speed (rounded to 2 decimals)
     trips["avg_speed_mph"] = np.where( trips["trip_duration_min"] > 0, (trips["trip_distance"] / (trips["trip_duration_min"] / 60)).round(2), 0)
+
+    # Count rows before filtering
+    before_filter = len(trips)
+
     
     # Remove unrealistic speeds 
     trips = trips[ (trips["avg_speed_mph"] >= 1) & (trips["avg_speed_mph"] <= 80)].copy()
+
+    # Count removed rows
+    speed_removed = before_filter - len(trips)
 
 
     # Fare per mile (rounded to 2 decimals)
     trips["fare_per_mile"] = np.where( trips["trip_distance"] > 0, (trips["fare_amount"] / trips["trip_distance"]).round(2), 0)
 
+    print(f"Removed {speed_removed} rows due to unrealistic speeds.")
     print("Feature engineering completed.")
-    return trips
+    return trips, speed_removed
 
 
 # STEP 4: Join with zone lookup to get borough and zone names
@@ -191,7 +199,14 @@ def main():
 
     trips = clean_trips(trips)
 
-    trips = engineer_features(trips)
+    trips, speed_removed = engineer_features(trips)
+
+    # log_path = os.path.join(LOG_DIR, "cleaning_log.txt")
+    with open(log_path, "a") as f:
+        f.write(f"Removed due to unrealistic speed: {speed_removed}\n")
+    log_path = os.path.join(LOG_DIR, "cleaning_log.txt")
+    with open(log_path, "a") as f:
+        f.write(f"Removed due to unrealistic speed: {speed_removed}\n")
 
     trips = integrate_lookup(trips, zone_lookup)
 
