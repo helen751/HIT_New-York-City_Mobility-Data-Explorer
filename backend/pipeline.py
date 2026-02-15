@@ -201,12 +201,10 @@ def main():
 
     trips, speed_removed = engineer_features(trips)
 
-    # log_path = os.path.join(LOG_DIR, "cleaning_log.txt")
-    with open(log_path, "a") as f:
+    # Added removed speed log to cleaning log
+    with open(os.path.join(LOG_DIR, "cleaning_log.txt"), "a") as f:
         f.write(f"Removed due to unrealistic speed: {speed_removed}\n")
-    log_path = os.path.join(LOG_DIR, "cleaning_log.txt")
-    with open(log_path, "a") as f:
-        f.write(f"Removed due to unrealistic speed: {speed_removed}\n")
+
 
     trips = integrate_lookup(trips, zone_lookup)
 
