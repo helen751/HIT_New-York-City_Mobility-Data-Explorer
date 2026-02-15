@@ -4,6 +4,37 @@ import pandas as pd
 import mysql.connector
 import time
 
+# defining the database connecton function
+def connect_to_db():
+    # Database connection enclosed in try and catch to handle potential connection errors
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="",
+            database="HIT_urban_mobility_db" # our db name
+        )
+        return conn
+    except mysql.connector.Error as err:
+
+        # checking if the error is database does not exist
+        if err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist. Attempting to create the database and tables...\n")
+
+            # running the database setup file if the database does not exist
+            setup_script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database_setup.sql")
+            if os.path.exists(setup_script_path):
+                print("Running database setup script...")
+                os.system(f"mysql -u root < {setup_script_path}")
+                print("Database setup completed. Proceeding with data loading.")
+                return connect_to_db() # try connecting again after creating the database
+            else:
+                print("Database setup script not found. Please ensure database_setup.sql is in the same directory as this script.")
+                sys.exit(1)
+        else:
+            print("Database connection failed:", err)
+            sys.exit(1)
+
 # load the cleaned CSV file and check if it exists
 base_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(base_dir, "processed", "cleaned_trips.csv")
@@ -14,18 +45,9 @@ if not os.path.exists(file_path):
 
 print("CSV file found. Loading data...")
 
-# Database connection enclosed in try and catch to handle potential connection errors
-try:
-    conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="HIT_urban_mobility_db" # our db name
-    )
-    cursor = conn.cursor()
-except mysql.connector.Error as err:
-    print("Database connection failed:", err)
-    sys.exit(1)
+# Calling the database connection function
+conn = connect_to_db()
+cursor = conn.cursor()
 
 print("Database connection successful. Time started...\n")
 
@@ -182,7 +204,7 @@ chunk_counter = 0
 commit_every = 5 # commit after every 5 chunks to manage memory and speed up inserting
 
 # Inserting into trips table with all foreign keys already in place
-query = "INSERT INTO trips (vendor_id, pickup_datetime, dropoff_datetime, passenger_count, trip_distance, rate_code_id, store_and_fwd_flag, pickup_location_id, dropoff_location_id, payment_type_id, fare_amount, extra, mta_tax, tip_amount, tolls_amount, improvement_surcharge, total_amount, trip_duration_min, avg_speed_mph, fare_per_mile) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+query = "INSERT IGNORE INTO trips (vendor_id, pickup_datetime, dropoff_datetime, passenger_count, trip_distance, rate_code_id, store_and_fwd_flag, pickup_location_id, dropoff_location_id, payment_type_id, fare_amount, extra, mta_tax, tip_amount, tolls_amount, improvement_surcharge, total_amount, trip_duration_min, avg_speed_mph, fare_per_mile) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
 
 # iterating through the DataFrame and inserting each trip record into the trips table in chunks

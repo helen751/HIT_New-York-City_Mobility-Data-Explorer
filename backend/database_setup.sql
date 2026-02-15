@@ -1,3 +1,4 @@
+-- Active: 1769294247711@@127.0.0.1@3306@HIT_urban_mobility_db
 # Create the database for the HIT Group Urban Mobility project
 CREATE DATABASE IF NOT EXISTS HIT_urban_mobility_db 
 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -84,9 +85,9 @@ CREATE TABLE IF NOT EXISTS trips (
     improvement_surcharge DECIMAL(6,2) NOT NULL DEFAULT 0,
     total_amount DECIMAL(8,2) NOT NULL,
 
-    trip_duration_min DECIMAL(6,2) NOT NULL COMMENT 'Storing the duration of the trip in minutes',
-    avg_speed_mph DOUBLE NOT NULL COMMENT 'Storing the average speed of the trip in miles per hour',
-    fare_per_mile DECIMAL(6,2) NOT NULL COMMENT 'Storing the fare per mile for the trip',
+    trip_duration_min DECIMAL(8,2) NOT NULL COMMENT 'Storing the duration of the trip in minutes',
+    avg_speed_mph DECIMAL(6,2) NOT NULL COMMENT 'Storing the average speed of the trip in miles per hour',
+    fare_per_mile DECIMAL(10,2) NOT NULL COMMENT 'Storing the fare per mile for the trip',
 
     -- Creating a unique trip
     UNIQUE KEY unique_trip (vendor_id, pickup_datetime, dropoff_datetime, pickup_location_id, dropoff_location_id),
@@ -107,3 +108,4 @@ CREATE TABLE IF NOT EXISTS trips (
     INDEX idx_trips_pickup_location (pickup_location_id),
     INDEX idx_trips_dropoff_location (dropoff_location_id)
 ) ENGINE=InnoDB;
+
