@@ -575,10 +575,11 @@ main {
 
 @media (min-width: 1600px) { .analytics-section { max-width: 1600px; } }
 
+
 /* ─── Section Heading ─────────────────────────── */
 .tables-heading {
   max-width: 1400px;
-  margin: 5px auto 16px;
+  margin: 40px auto 16px;
   padding: 0 4px;
 }
 .tables-heading__title {
@@ -716,7 +717,6 @@ main {
   white-space: nowrap;
 }
 .loc-table thead th:hover { color: var(--first-color); }
-.loc-table thead th:first-child { text-align: center; }
 
 .loc-table tbody tr {
   border-bottom: 1px solid hsl(220, 20%, 95%);
@@ -730,22 +730,6 @@ main {
   color: #444;
   white-space: nowrap;
 }
-.loc-table tbody td:first-child { text-align: center; }
-
-/* ─── Rank badges ─────────────────────────────── */
-.rank {
-  font-weight: 700;
-  font-size: 0.78rem;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.rank--1 { background: hsl(45, 100%, 92%); color: hsl(40, 85%, 40%); }
-.rank--2 { background: hsl(220, 20%, 92%); color: hsl(220, 30%, 40%); }
-.rank--3 { background: hsl(20, 80%, 93%);  color: hsl(20, 70%, 40%);  }
 
 /* ─── Borough tags ────────────────────────────── */
 .borough-tag {
