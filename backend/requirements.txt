@@ -2,5 +2,4 @@ flask
 flask-cors
 mysql-connector-python
 pandas
-pandas
 geopandas
