@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--External link to Rexicon-->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!--Linking the css code-->
+  <link rel="stylesheet" href="style.css">
+
+  <title> HIT New York City Mobility Data Explorer</title>
+</head>
+<body>
+  <!--Page header showing navigations-->
+  <header class="header">
+    <nav class="nav container">
+      <div class="nav__data">
+        <a href="#" class="nav__logo">
+          <i class="ri-taxi-wifi-line"></i>HIT Taxi Explorer Dashboard
+        </a>
+
+        <div class="nav__toggle" id="nav-toggle">
+          <i class="ri-menu-line nav__toggle-menu"></i>
+          <i class="ri-close-line nav__toggle-close"></i>
+        </div>
+      </div>
+
+      <!--The navigation menu links-->
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="#" class="nav__link">Home</a></li>
+          <li><a href="#" class="nav__link">Time Insight</a></li>
+          <li><a href="#" class="nav__link">Borough</a></li>
+          <li><a href="#" class="nav__link">Distance & Fare</a></li>
+          <li><a href="#" class="nav__link">Payment</a></li>
+
+          <!--dropdown showing filters and users can customise the data view-->
+          <li class="dropdown__item">
+            <div class="nav__link dropdown__button">
+              Filter <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+
+            <div class="dropdown__container">
+              <div class="dropdown__content">
+                <div class="dropdown__group">
+                  <div class="dropdown__icon"><i class="ri-calendar-line"></i></div>
+                  <span class="dropdown__title">Date Range</span>
+                  <ul class="dropdown__list">
+                    <li><a href="#" class="dropdown__link">HTML for beginners</a></li>
+                  </ul>
+                </div>
+
+                <div class="dropdown__group">
+                  <div class="dropdown__icon"><i class="ri-map-pin-line"></i></div>
+                  <span class="dropdown__title">Location</span>
+                  <ul class="dropdown__list">
+                    <li><a href="#" class="dropdown__link">Development with Flutter</a></li>
+                  </ul>
+                </div>
+
+                <div class="dropdown__group">
+                  <div class="dropdown__icon"><i class="ri-road-map-line"></i></div>
+                  <span class="dropdown__title">Distance & Fare</span>
+                  <ul class="dropdown__list">
+                    <li><a href="#" class="dropdown__link">Web development</a></li>
+                  </ul>
+                </div>
+
+                <div class="dropdown__group">
+                  <div class="dropdown__icon"><i class="ri-money-dollar-circle-line"></i></div>
+                  <span class="dropdown__title">Payment Type</span>
+                  <ul class="dropdown__list">
+                    <li><a href="#" class="dropdown__link">Course certificates</a></li>
+                    <li><a href="#" class="dropdown__link">Free certifications</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+	<main>
+		<div class="dashboard">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Total Trips</div>
+          <div class="card-value" data-target="1920">0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Total Revenue</div>
+          <div class="card-value" data-target="45840">$0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Average Fare</div>
+          <div class="card-value" data-target="3671">$0</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Avg. Distance</div>
+          <div class="card-value" data-target="4.8">0 mi</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Average Speed</div>
+          <div class="card-value" data-target="217">0 mph</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard data analysis section -->
+    <section class="analytics-section">
+      <div class="analytics-layout">
+
+        <!-- LEFT COL: two large graph boxes -->
+        <div class="analytics-graphs">
+
+          <div class="graph-box">
+            <div class="graph-box__header">
+              <span class="graph-box__title">Trips Over Time</span>
+              <span class="graph-box__badge">Daily</span>
+            </div>
+            <div class="graph-box__body">
+              <div class="graph-placeholder">
+                <div class="graph-placeholder__bars">
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                </div>
+                <span class="graph-placeholder__label">Chart loads with data</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="graph-box">
+            <div class="graph-box__header">
+              <span class="graph-box__title">Fare Distribution</span>
+              <span class="graph-box__badge">Weekly</span>
+            </div>
+            <div class="graph-box__body">
+              <div class="graph-placeholder graph-placeholder--line">
+                <svg class="line-preview" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="0,60 30,45 60,55 90,30 120,40 150,20 180,35 210,15 240,28 270,18 300,10"
+                    stroke="hsl(220,68%,54%)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <polyline points="0,60 30,45 60,55 90,30 120,40 150,20 180,35 210,15 240,28 270,18 300,10 300,80 0,80"
+                    fill="hsl(220,68%,54%)" fill-opacity="0.08"/>
+                </svg>
+                <span class="graph-placeholder__label">Chart loads with data</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COL: two small stat cards -->
+        <div class="analytics-stats">
+
+          <div class="stat-card">
+            <div class="stat-card__icon-row">
+              <div class="stat-card__icon"><i class="ri-time-line"></i></div>
+              <span class="stat-card__title">Peak Hours</span>
+            </div>
+            <div class="stat-card__value">6–9 PM</div>
+            <div class="stat-card__sub">Highest demand window across all boroughs</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__icon-row">
+              <div class="stat-card__icon"><i class="ri-calendar-check-line"></i></div>
+              <span class="stat-card__title">Busiest Day</span>
+            </div>
+            <div class="stat-card__value">Friday</div>
+            <div class="stat-card__sub">Avg. 312 trips — 18% above weekly mean</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    
+<!-- ── Section heading ── -->
+<div class="tables-heading">
+  <h2 class="tables-heading__title">Top 10 Locations</h2>
+  <p class="tables-heading__sub">Ranked by trip volume across all boroughs</p>
+</div>
+
+<!-- ── Three-table grid ── -->
+<div class="tables-grid">
+
+  <!-- TABLE 1: Pickup Locations -->
+  <div class="loc-table-card">
+    <div class="loc-table-card__header">
+      <div class="loc-table-card__icon"><i class="ri-map-pin-2-fill"></i></div>
+      <div>
+        <div class="loc-table-card__title">Pickup Locations</div>
+        <div class="loc-table-card__badge">Top 10</div>
+      </div>
+    </div>
+    <div class="loc-table-card__body">
+      <table class="loc-table">
+        <thead>
+          <tr>
+            <th>Borough</th>
+            <th>Trips</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Manhattan</td><td>4,821</td></tr>
+          <tr><td>Queens</td><td>3,654</td></tr>
+          <tr><td>Manhattan</td><td>3,102</td></tr>
+          <tr><td>Manhattan</td><td>2,874</td></tr>
+          <tr><td>Manhattan</td><td>2,511</td></tr>
+          <tr><td>Queens</td><td>2,290</td></tr>
+          <tr><td>Manhattan</td><td>1,987</td></tr>
+          <tr><td>Brooklyn</td><td>1,744</td></tr>
+          <tr><td>Queens</td><td>1,601</td></tr>
+          <tr><td>Brooklyn</td><td>1,430</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABLE 2: Dropoff Locations -->
+  <div class="loc-table-card">
+    <div class="loc-table-card__header">
+      <div class="loc-table-card__icon loc-table-card__icon--drop"><i class="ri-map-pin-add-fill"></i></div>
+      <div>
+        <div class="loc-table-card__title">Dropoff Locations</div>
+        <div class="loc-table-card__badge loc-table-card__badge--drop">Top 10</div>
+      </div>
+    </div>
+    <div class="loc-table-card__body">
+      <table class="loc-table">
+        <thead>
+          <tr>
+            <th>Borough</th>
+            <th>Trips</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Manhattan</td><td>4,821</td></tr>
+          <tr><td>Queens</td><td>3,654</td></tr>
+          <tr><td>Manhattan</td><td>3,102</td></tr>
+          <tr><td>Manhattan</td><td>2,874</td></tr>
+          <tr><td>Manhattan</td><td>2,511</td></tr>
+          <tr><td>Queens</td><td>2,290</td></tr>
+          <tr><td>Manhattan</td><td>1,987</td></tr>
+          <tr><td>Brooklyn</td><td>1,744</td></tr>
+          <tr><td>Queens</td><td>1,601</td></tr>
+          <tr><td>Brooklyn</td><td>1,430</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABLE 3: Busiest Routes -->
+  <div class="loc-table-card">
+    <div class="loc-table-card__header">
+      <div class="loc-table-card__icon loc-table-card__icon--route"><i class="ri-route-fill"></i></div>
+      <div>
+        <div class="loc-table-card__title">Avg. Fare by Borough</div>
+      </div>
+    </div>
+    <div class="loc-table-card__body">
+      <table class="loc-table">
+        <thead>
+          <tr>
+            <th>Borough</th>
+            <th>Avg Fare</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Manhattan</span></td><td>$14.21</td></tr>
+          <tr><td>Queens</span></td><td>$13.54</td></tr>
+          <tr><td>Manhattan</span></td><td>$13.02</td></tr>
+          <tr><td>Manhattan</span></td><td>$12.74</td></tr>
+          <tr><td>Manhattan</span></td><td>$11.54</td></tr>
+          <tr><td>Queens</span></td><td>$11.30</td></tr>
+          <tr><td>Manhattan</span></td><td>$10.45</td></tr>
+          <tr><td>Brooklyn</span></td><td>$9.80</td></tr>
+          <tr><td>Queens</span></td><td>$9.20</td></tr>
+          <tr><td>Brooklyn</span></td><td>$8.30</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+	</main>
+
+  <script src="script.js"></script>
+</body>
+</html>

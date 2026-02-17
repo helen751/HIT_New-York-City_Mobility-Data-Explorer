@@ -557,7 +557,7 @@ main {
 
 /* ── Tablet: graphs side by side ── */
 @media (min-width: 640px) {
-  .analytics-graphs { grid-template-columns: 1fr 1fr; }
+  .analytics-graphs { display:flex; flex-direction: column }
   /* stats already 1fr 1fr on mobile — keep on tablet */
 }
 
@@ -568,7 +568,7 @@ main {
     gap: 24px;
     align-items: start;
   }
-  .analytics-graphs { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .analytics-graphs { display:flex; flex-direction: column; gap: 20px; }
   /* stack the stat cards vertically in the right column */
   .analytics-stats { grid-template-columns: 1fr; gap: 20px; }
 }
