@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from db import get_connection
+from algorithm import quicksort
 
 app = Flask(__name__)
 CORS(app)
@@ -55,5 +56,27 @@ def summary():
     return jsonify(result)
 
 
+@app.route("/api/top-expensive")
+def top_expensive():
+
+    k = int(request.args.get("k", 10))
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT trip_id, fare_amount FROM trips LIMIT 1000")
+    trips = cursor.fetchall()
+
+    sorted_trips = quicksort(trips)
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(sorted_trips[:k])
+
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
