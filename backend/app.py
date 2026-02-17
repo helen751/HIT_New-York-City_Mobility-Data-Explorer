@@ -55,6 +55,62 @@ def summary():
 
     return jsonify(result)
 
+@app.route("/api/filter")
+def filter_trips():
+
+    # Get query parameters from URL
+    start = request.args.get("start")
+    end = request.args.get("end")
+
+    min_fare = request.args.get("min_fare", 0)
+    max_fare = request.args.get("max_fare", 1000)
+
+    passengers = request.args.get("passengers")
+    min_distance = request.args.get("min_distance", 0)
+    max_distance = request.args.get("max_distance", 1000)
+
+    sort = request.args.get("sort", "pickup_datetime")
+
+    # Whitelist allowed sorting columns (prevents SQL injection)
+    allowed_sort = [
+        "pickup_datetime",
+        "fare_amount",
+        "trip_distance",
+        "passenger_count"
+    ]
+
+    if sort not in allowed_sort:
+        sort = "pickup_datetime"
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT *
+        FROM trips
+        WHERE pickup_datetime BETWEEN %s AND %s
+        AND fare_amount BETWEEN %s AND %s
+        AND trip_distance BETWEEN %s AND %s
+    """
+
+    params = [start, end, min_fare, max_fare, min_distance, max_distance]
+
+    # Optional passenger filter
+    if passengers:
+        query += " AND passenger_count = %s"
+        params.append(passengers)
+
+    query += f" ORDER BY {sort} LIMIT 500"
+
+    cursor.execute(query, params)
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+
 
 @app.route("/api/top-expensive")
 def top_expensive():

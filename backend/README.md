@@ -120,27 +120,89 @@ The example above:
 
 ---
 
-# Running the Backend Server
+---
 
-## Step 1: Install Dependencies
+## 4. Top Expensive Trips (Algorithm Endpoint)
+
+This endpoint uses a custom **quicksort algorithm** to return the most expensive trips.
+
+### Endpoint
 
 ```
-pip install flask flask-cors mysql-connector-python
+GET /api/top-expensive
 ```
 
-## Step 2: Start the Server
+### Example Request
+
+```
+http://localhost:5000/api/top-expensive?k=5
+```
+
+### Parameters
+
+| Parameter | Description |
+|----------|-------------|
+| k | Number of top expensive trips to return |
+
+(Default is 10 if not specified)
+
+### Example Response
+
+```json
+[
+  {"trip_id": 102, "fare_amount": 85.0},
+  {"trip_id": 54, "fare_amount": 80.5},
+  {"trip_id": 210, "fare_amount": 78.2}
+]
+```
+
+### How It Works
+
+This endpoint:
+
+- Fetches trip fares from the database
+- Sorts them using a custom quicksort algorithm
+- Returns the top *k* highest fares
+
+## Install Dependencies
+
+All required packages are listed in `requirements.txt`.
+
+Run:
+
+```
+pip install -r requirements.txt
+```
+
+## Example requirements.txt
+
+Your `requirements.txt` should contain:
+
+```
+flask
+flask-cors
+mysql-connector-python
+pandas
+geopandas
+```
+
+---
+
+# Running the Server
+
+Start the backend server:
 
 ```
 python app.py
 ```
 
-## Step 3: Open in Browser
-
-Visit:
+The API will run at:
 
 ```
-http://localhost:5000/api/trips?start=2019-01-01&end=2019-02-01
+http://localhost:5000
 ```
+
+---
 
 ---
 
