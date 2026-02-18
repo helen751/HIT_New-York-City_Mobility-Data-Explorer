@@ -14,6 +14,7 @@ SET sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION';
 
 
 # Creating the vendors table
+
 CREATE TABLE IF NOT EXISTS vendors (
     vendor_id INT PRIMARY KEY COMMENT 'Storing the vendor ID which can have more entities in the future'
 ) ENGINE=InnoDB;
@@ -109,3 +110,46 @@ CREATE TABLE IF NOT EXISTS trips (
     INDEX idx_trips_dropoff_location (dropoff_location_id)
 ) ENGINE=InnoDB;
 
+
+
+CREATE INDEX idx_trips_pickup_loc_fare_datetime
+ON trips (pickup_location_id, pickup_datetime, fare_amount);
+
+CREATE INDEX idx_locations_loc_borough_cover
+ON locations (location_id, borough_id);
+
+CREATE TABLE IF NOT EXISTS borough_fare_summary (
+    borough_id INT PRIMARY KEY,
+    avg_fare DECIMAL(10,2),
+    trip_count BIGINT,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+INSERT INTO borough_fare_summary (borough_id, avg_fare, trip_count)
+SELECT 
+    l.borough_id,
+    AVG(t.fare_amount),
+    COUNT(*)
+FROM trips t
+JOIN locations l ON t.pickup_location_id = l.location_id
+GROUP BY l.borough_id
+ON DUPLICATE KEY UPDATE
+    avg_fare = VALUES(avg_fare),
+    trip_count = VALUES(trip_count),
+    last_updated = CURRENT_TIMESTAMP;
+
+DELIMITER $$
+
+CREATE PROCEDURE refresh_borough_summary()
+BEGIN
+    REPLACE INTO borough_fare_summary (borough_id, avg_fare, trip_count)
+    SELECT 
+        l.borough_id,
+        AVG(t.fare_amount),
+        COUNT(*)
+    FROM trips t
+    JOIN locations l ON t.pickup_location_id = l.location_id
+    GROUP BY l.borough_id;
+END$$
+
+DELIMITER ;

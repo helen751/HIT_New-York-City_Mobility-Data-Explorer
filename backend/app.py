@@ -95,13 +95,13 @@ def avg_fare_by_borough():
     cursor.execute("""
         SELECT 
             b.borough_name,
-            AVG(t.fare_amount) AS avg_fare,
-            COUNT(*) AS trip_count
-        FROM trips t
-        JOIN locations l ON t.pickup_location_id = l.location_id
-        JOIN boroughs b ON l.borough_id = b.borough_id
-        GROUP BY b.borough_name
-        ORDER BY avg_fare DESC
+            s.avg_fare,
+            s.trip_count,
+            s.last_updated
+        FROM borough_fare_summary s
+        JOIN boroughs b 
+            ON s.borough_id = b.borough_id
+        ORDER BY s.avg_fare DESC
     """)
 
     result = cursor.fetchall()
