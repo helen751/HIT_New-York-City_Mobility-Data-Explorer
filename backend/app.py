@@ -297,6 +297,29 @@ def top_expensive():
     return jsonify(sorted_trips[:k])
 
 
+@app.route("/api/payment-types")
+def get_payment_types():
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT 
+            payment_type_id,
+            description
+        FROM payment_types
+        ORDER BY payment_type_id
+    """)
+
+    result = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(result)
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
