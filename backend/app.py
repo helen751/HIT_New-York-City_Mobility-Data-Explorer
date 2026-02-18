@@ -33,7 +33,6 @@ def get_trips():
 
     return jsonify(data)
 
-
 @app.route("/api/summary")
 def summary():
 
@@ -43,7 +42,7 @@ def summary():
     cursor.execute("""
         SELECT
             AVG(fare_amount) as avg_fare,
-            AVG(trip_distance) as avg_distance,
+            AVG(trip_distance) as avg_distance, AVG(avg_speed_mph) as avg_speed, SUM(total_amount) as avg_total_amount,
             COUNT(*) as total_trips
         FROM trips
     """)
@@ -54,6 +53,64 @@ def summary():
     conn.close()
 
     return jsonify(result)
+
+@app.route("/api/top-locations")
+def top_locations():
+
+    loc_type = request.args.get("type", "pickup")
+    limit = int(request.args.get("limit", 10))
+
+    column = "pickup_location_id" if loc_type == "pickup" else "dropoff_location_id"
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = f"""
+        SELECT 
+            l.zone_name as zone,
+            b.borough_name as borough,
+            COUNT(*) AS trip_count
+        FROM trips t
+        JOIN locations l ON t.{column} = l.location_id
+        JOIN boroughs b ON l.borough_id = b.borough_id
+        GROUP BY t.{column}
+        ORDER BY trip_count DESC
+        LIMIT {limit}
+    """
+
+    cursor.execute(query)
+    result = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(result)
+
+@app.route("/api/avg-fare-by-borough")
+def avg_fare_by_borough():
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT 
+            b.borough_name,
+            AVG(t.fare_amount) AS avg_fare,
+            COUNT(*) AS trip_count
+        FROM trips t
+        JOIN locations l ON t.pickup_location_id = l.location_id
+        JOIN boroughs b ON l.borough_id = b.borough_id
+        GROUP BY b.borough_name
+        ORDER BY avg_fare DESC
+    """)
+
+    result = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(result)
+
 
 @app.route("/api/filter")
 def filter_trips():

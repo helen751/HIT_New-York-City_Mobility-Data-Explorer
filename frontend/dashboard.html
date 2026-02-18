@@ -89,35 +89,35 @@
       <div class="card">
         <div class="card-content">
           <div class="card-title">Total Trips</div>
-          <div class="card-value" data-target="1920">0</div>
+          <div class="card-value" id="totalTrips" >loading...</div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-content">
           <div class="card-title">Total Revenue</div>
-          <div class="card-value" data-target="45840">$0</div>
+          <div class="card-value" id="totalRevenue"  >loading...</div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-content">
           <div class="card-title">Average Fare</div>
-          <div class="card-value" data-target="3671">$0</div>
+          <div class="card-value" id="avgFare">loading...</div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-content">
           <div class="card-title">Avg. Distance</div>
-          <div class="card-value" data-target="4.8">0 mi</div>
+          <div class="card-value" id="avgDistance" >loading...</div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-content">
           <div class="card-title">Average Speed</div>
-          <div class="card-value" data-target="217">0 mph</div>
+          <div class="card-value" id="avgSpeed" >loading...</div>
         </div>
       </div>
     </div>
@@ -219,24 +219,15 @@
       </div>
     </div>
     <div class="loc-table-card__body">
-      <table class="loc-table">
+      <table class="loc-table" id="topPickupsTable">
         <thead>
           <tr>
-            <th>Borough</th>
+            <th>Zone Name</th>
             <th>Trips</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Manhattan</td><td>4,821</td></tr>
-          <tr><td>Queens</td><td>3,654</td></tr>
-          <tr><td>Manhattan</td><td>3,102</td></tr>
-          <tr><td>Manhattan</td><td>2,874</td></tr>
-          <tr><td>Manhattan</td><td>2,511</td></tr>
-          <tr><td>Queens</td><td>2,290</td></tr>
-          <tr><td>Manhattan</td><td>1,987</td></tr>
-          <tr><td>Brooklyn</td><td>1,744</td></tr>
-          <tr><td>Queens</td><td>1,601</td></tr>
-          <tr><td>Brooklyn</td><td>1,430</td></tr>
+            <tr><td colspan="2">Loading data...</td></tr>
         </tbody>
       </table>
     </div>
@@ -252,28 +243,21 @@
       </div>
     </div>
     <div class="loc-table-card__body">
-      <table class="loc-table">
+      <table class="loc-table" id="topDropsTable">
         <thead>
           <tr>
-            <th>Borough</th>
+            <th>Zone Name</th>
             <th>Trips</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Manhattan</td><td>4,821</td></tr>
-          <tr><td>Queens</td><td>3,654</td></tr>
-          <tr><td>Manhattan</td><td>3,102</td></tr>
-          <tr><td>Manhattan</td><td>2,874</td></tr>
-          <tr><td>Manhattan</td><td>2,511</td></tr>
-          <tr><td>Queens</td><td>2,290</td></tr>
-          <tr><td>Manhattan</td><td>1,987</td></tr>
-          <tr><td>Brooklyn</td><td>1,744</td></tr>
-          <tr><td>Queens</td><td>1,601</td></tr>
-          <tr><td>Brooklyn</td><td>1,430</td></tr>
+            <tr><td colspan="2">Loading data...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
+
+  
 
   <!-- TABLE 3: Busiest Routes -->
   <div class="loc-table-card">
@@ -284,7 +268,7 @@
       </div>
     </div>
     <div class="loc-table-card__body">
-      <table class="loc-table">
+      <table class="loc-table" id="avgFareByBoroughTable">
         <thead>
           <tr>
             <th>Borough</th>
@@ -292,16 +276,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Manhattan</span></td><td>$14.21</td></tr>
-          <tr><td>Queens</span></td><td>$13.54</td></tr>
-          <tr><td>Manhattan</span></td><td>$13.02</td></tr>
-          <tr><td>Manhattan</span></td><td>$12.74</td></tr>
-          <tr><td>Manhattan</span></td><td>$11.54</td></tr>
-          <tr><td>Queens</span></td><td>$11.30</td></tr>
-          <tr><td>Manhattan</span></td><td>$10.45</td></tr>
-          <tr><td>Brooklyn</span></td><td>$9.80</td></tr>
-          <tr><td>Queens</span></td><td>$9.20</td></tr>
-          <tr><td>Brooklyn</span></td><td>$8.30</td></tr>
+            <tr><td colspan="2">Loading data...</td></tr>
         </tbody>
       </table>
     </div>
@@ -311,5 +286,6 @@
 	</main>
 
   <script src="script.js"></script>
+  <script src="api-data.js"></script>
 </body>
 </html>

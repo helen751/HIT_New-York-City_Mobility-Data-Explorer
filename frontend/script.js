@@ -74,47 +74,37 @@ const removeStyle = () =>{
 addEventListener('resize', removeStyle)
 
 // Counter animation for dashboard cards
-document.addEventListener('DOMContentLoaded', () => {
-  const counters = document.querySelectorAll('.card-value');
+function counterAnimation(){
+  const cards = document.querySelectorAll('.card-value');
 
-  const options = {
-    threshold: 0.1,           // start animating when 10% of element is visible
-    rootMargin: '0px 0px -100px 0px'
-  };
+  // Loop through each card and animate the count up to the actual value
+  cards.forEach(card => {
+        const target = Number(card.textContent);
+        let count = 0;
+        const increment = target / 100;
 
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const counter = entry.target;
-        const target = parseFloat(counter.getAttribute('data-target'));
-        const prefix = counter.textContent.includes('$') ? '$' : '';
-        const suffix = counter.textContent.includes('mi') ? ' mi' :
-                       counter.textContent.includes('mph') ? ' mph' : '';
+        const update = () => {
+            count += increment;
+            if (count < target) {
+                card.textContent = Math.floor(count);
+                requestAnimationFrame(update);
+            } else {
+                card.textContent = target.toLocaleString(); // Format with commas
 
-        let start = 0;
-        const duration = 1800; // ms
-        const increment = target / (duration / 16); // ~60fps
-
-        const updateCounter = () => {
-          start += increment;
-          if (start < target) {
-            // Show 0 decimal places for big integers, 1 for small floats
-            const displayValue = Number.isInteger(target) 
-              ? Math.ceil(start) 
-              : start.toFixed(1);
-            
-            counter.textContent = prefix + displayValue + suffix;
-            requestAnimationFrame(updateCounter);
-          } else {
-            counter.textContent = prefix + target + suffix;
-            observer.unobserve(counter);
-          }
+                // adding units to specific cards
+                if (card.id === 'avgFare') {
+                    card.textContent = '$' + card.textContent;
+                } else if (card.id === 'avgDistance') {
+                    card.textContent += ' miles';
+                } else if (card.id === 'avgSpeed') {
+                    card.textContent += ' mph';
+                } else if (card.id === 'totalRevenue') {
+                    card.textContent = '$' + card.textContent;
+                }
+            }
         };
 
-        updateCounter();
-      }
+        card.textContent = 0;
+        update();
     });
-  }, options);
-
-  counters.forEach(counter => observer.observe(counter));
-});
+}
