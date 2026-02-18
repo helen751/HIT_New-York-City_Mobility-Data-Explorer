@@ -17,61 +17,37 @@ showMenu('nav-toggle','nav-menu')
 const dropdownItems = document.querySelectorAll('.dropdown__item')
 
 // 1. Select each dropdown item
-dropdownItems.forEach((item) =>{
-    const dropdownButton = item.querySelector('.dropdown__button') 
+const dropdownItem = document.querySelector('.dropdown__item');
+const dropdownButton = document.querySelector('.dropdown__button');
+const dropdownContainer = document.querySelector('.dropdown__container');
 
-    // 2. Select each button click
-    dropdownButton.addEventListener('click', () =>{
-        // 7. Select the current show-dropdown class
-        const showDropdown = document.querySelector('.show-dropdown')
-        
-        // 5. Call the toggleItem function
-        toggleItem(item)
+// open when button clicked
+dropdownButton.addEventListener('click', function (e) {
+    e.stopPropagation(); // prevent bubbling
+    dropdownItem.classList.toggle('show-dropdown');
+});
 
-        // 8. Remove the show-dropdown class from other items
-        if(showDropdown && showDropdown!== item){
-            toggleItem(showDropdown)
-        }
-    })
-})
-
-// 3. Create a function to display the dropdown
-const toggleItem = (item) =>{
-    // 3.1. Select each dropdown content
-    const dropdownContainer = item.querySelector('.dropdown__container')
-
-    // 6. If the same item contains the show-dropdown class, remove
-    if(item.classList.contains('show-dropdown')){
-        dropdownContainer.removeAttribute('style')
-        item.classList.remove('show-dropdown')
-    } else{
-        // 4. Add the maximum height to the dropdown content and add the show-dropdown class
-        dropdownContainer.style.height = dropdownContainer.scrollHeight + 'px'
-        item.classList.add('show-dropdown')
+// close when clicking outside
+document.addEventListener('click', function (e) {
+    if (!dropdownItem.contains(e.target)) {
+        dropdownItem.classList.remove('show-dropdown');
     }
-}
+});
 
-/*=============== DELETE DROPDOWN STYLES ===============*/
-const mediaQuery = matchMedia('(min-width: 1118px)'),
-      dropdownContainer = document.querySelectorAll('.dropdown__container')
+const mediaQuery = window.matchMedia('(min-width: 1118px)');
 
-// Function to remove dropdown styles in mobile mode when browser resizes
-const removeStyle = () =>{
-    // Validate if the media query reaches 1118px
-    if(mediaQuery.matches){
-        // Remove the dropdown container height style
-        dropdownContainer.forEach((e) =>{
-            e.removeAttribute('style')
-        })
+const removeStyle = () => {
+  if (mediaQuery.matches) {
+    // remove inline height if any
+    dropdownContainer.removeAttribute('style');
 
-        // Remove the show-dropdown class from dropdown item
-        dropdownItems.forEach((e) =>{
-            e.classList.remove('show-dropdown')
-        })
-    }
-}
+    // close dropdown
+    dropdownItem.classList.remove('show-dropdown');
+  }
+};
 
-addEventListener('resize', removeStyle)
+window.addEventListener('resize', removeStyle);
+
 
 // Counter animation for dashboard cards
 function counterAnimation(){
@@ -108,3 +84,27 @@ function counterAnimation(){
         update();
     });
 }
+
+// Dropdown for search filters in the search page
+const searchMethod = document.getElementById("searchMethod");
+
+const sections = {
+  payment: document.getElementById("paymentSearch"),
+  date: document.getElementById("dateSearch"),
+  fare: document.getElementById("fareSearch"),
+  distance: document.getElementById("distanceSearch")
+};
+
+searchMethod.addEventListener("change", function () {
+
+  // hide everything first
+  Object.values(sections).forEach(section => {
+    section.classList.add("hidden");
+  });
+
+  // show only selected one
+  if (sections[this.value]) {
+    sections[this.value].classList.remove("hidden");
+  }
+});
+

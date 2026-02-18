@@ -101,11 +101,14 @@ CREATE TABLE IF NOT EXISTS trips (
 
     -- Creating all the necessary indexes to optimize the queries on the trips table
     INDEX idx_trips_pickup_datetime (pickup_datetime),
-    INDEX idx_trips_dropoff_datetime (dropoff_datetime),
-    INDEX idx_trips_vendor (vendor_id),
     INDEX idx_trips_payment_type (payment_type_id),
-    INDEX idx_trips_rate_code (rate_code_id),
-    INDEX idx_trips_pickup_location (pickup_location_id),
-    INDEX idx_trips_dropoff_location (dropoff_location_id)
+    INDEX idx_trips_passenger (passenger_count),
+    INDEX idx_trips_fare (fare_amount),
+    INDEX idx_trips_trip_distance (trip_distance),
+
+    -- composite indexes
+    INDEX idx_trips_pickup_loc_tripid (pickup_location_id, fare_amount),
+    INDEX idx_trips_dropoff_loc_tripid (dropoff_location_id, fare_amount)
+
 ) ENGINE=InnoDB;
 

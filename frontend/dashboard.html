@@ -31,51 +31,84 @@
       <div class="nav__menu" id="nav-menu">
         <ul class="nav__list">
           <li><a href="#" class="nav__link">Home</a></li>
-          <li><a href="#" class="nav__link">Time Insight</a></li>
-          <li><a href="#" class="nav__link">Borough</a></li>
-          <li><a href="#" class="nav__link">Distance & Fare</a></li>
-          <li><a href="#" class="nav__link">Payment</a></li>
+          <li><a href="#" class="nav__link">Top Locations</a></li>
 
           <!--dropdown showing filters and users can customise the data view-->
           <li class="dropdown__item">
             <div class="nav__link dropdown__button">
-              Filter <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+              Search Trips <i class="ri-arrow-down-s-line dropdown__arrow"></i>
             </div>
 
             <div class="dropdown__container">
               <div class="dropdown__content">
-                <div class="dropdown__group">
-                  <div class="dropdown__icon"><i class="ri-calendar-line"></i></div>
-                  <span class="dropdown__title">Date Range</span>
-                  <ul class="dropdown__list">
-                    <li><a href="#" class="dropdown__link">HTML for beginners</a></li>
-                  </ul>
-                </div>
+                <!-- Trip search section -->
+                <div class="trip-search">
 
-                <div class="dropdown__group">
-                  <div class="dropdown__icon"><i class="ri-map-pin-line"></i></div>
-                  <span class="dropdown__title">Location</span>
-                  <ul class="dropdown__list">
-                    <li><a href="#" class="dropdown__link">Development with Flutter</a></li>
-                  </ul>
-                </div>
+                    <h3>Search Trips</h3>
 
-                <div class="dropdown__group">
-                  <div class="dropdown__icon"><i class="ri-road-map-line"></i></div>
-                  <span class="dropdown__title">Distance & Fare</span>
-                  <ul class="dropdown__list">
-                    <li><a href="#" class="dropdown__link">Web development</a></li>
-                  </ul>
-                </div>
+                    <div class="search-layout">
 
-                <div class="dropdown__group">
-                  <div class="dropdown__icon"><i class="ri-money-dollar-circle-line"></i></div>
-                  <span class="dropdown__title">Payment Type</span>
-                  <ul class="dropdown__list">
-                    <li><a href="#" class="dropdown__link">Course certificates</a></li>
-                    <li><a href="#" class="dropdown__link">Free certifications</a></li>
-                  </ul>
-                </div>
+                        <!-- LEFT SIDE -->
+                        <div class="search-left">
+                        <div class="search-group">
+                            <label for="searchMethod">Search by:</label>
+                            <select id="searchMethod">
+                            <option value="">Select Method</option>
+                            <option value="payment">Payment Method</option>
+                            <option value="date">Date Range</option>
+                            <option value="fare">Fare Amount</option>
+                            <option value="distance">Distance</option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <!-- RIGHT SIDE -->
+                        <div class="search-right">
+
+                        <div class="search-group hidden" id="paymentSearch">
+                            <label>Payment Method</label>
+                            <select id="paymentType">
+                            <option value="1">Credit Card</option>
+                            <option value="2">Cash</option>
+                            <option value="3">No Charge</option>
+                            <option value="4">Dispute</option>
+                            <option value="5">Transfer</option>
+                            <option value="6">Voided Trip</option>
+                            </select>
+                        </div>
+
+                        <div class="search-group hidden" id="dateSearch">
+                            <label>From</label>
+                            <input type="date" id="startDate">
+                            <label>To</label>
+                            <input type="date" id="endDate">
+                        </div>
+
+                        <div class="search-group hidden" id="fareSearch">
+                            <label>Min Fare</label>
+                            <input type="number" id="minFare">
+                            <label>Max Fare</label>
+                            <input type="number" id="maxFare">
+                        </div>
+
+                        <div class="search-group hidden" id="distanceSearch">
+                            <label>Min Distance</label>
+                            <input type="number" id="minDistance">
+                            <label>Max Distance</label>
+                            <input type="number" id="maxDistance">
+                        </div>
+
+                        </div>
+
+                    </div>
+
+                    <button id="searchBtn">Search</button>
+
+                    </div>
+
+
+
+               
               </div>
             </div>
           </li>
@@ -85,7 +118,7 @@
   </header>
 
 	<main>
-		<div class="dashboard">
+		<div class="dashboard" style="padding-top: 3%; padding-bottom: 1%;">
       <div class="card">
         <div class="card-content">
           <div class="card-title">Total Trips</div>
