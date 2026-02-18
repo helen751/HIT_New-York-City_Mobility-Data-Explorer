@@ -19,18 +19,9 @@ def connect_to_db():
 
         # checking if the error is database does not exist
         if err.errno == mysql.connector.errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist. Attempting to create the database and tables...\n")
+            print("Database does not exist. Run the database_setup.sql script first to create the database and tables.\n")
+            sys.exit(1)
 
-            # running the database setup file if the database does not exist
-            setup_script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "database_setup.sql")
-            if os.path.exists(setup_script_path):
-                print("Running database setup script...")
-                os.system(f"mysql -u root < {setup_script_path}")
-                print("Database setup completed. Proceeding with data loading.")
-                return connect_to_db() # try connecting again after creating the database
-            else:
-                print("Database setup script not found. Please ensure database_setup.sql is in the same directory as this script.")
-                sys.exit(1)
         else:
             print("Database connection failed:", err)
             sys.exit(1)

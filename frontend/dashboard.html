@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--External link to Rexicon-->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!--Linking the css code-->
+  <link rel="stylesheet" href="style.css">
+
+  <title> HIT New York City Mobility Data Explorer</title>
+</head>
+<body>
+  <!--Page header showing navigations-->
+  <header class="header">
+    <nav class="nav container">
+      <div class="nav__data">
+        <a href="#" class="nav__logo">
+          <i class="ri-taxi-wifi-line"></i>HIT Taxi Explorer Dashboard
+        </a>
+
+        <div class="nav__toggle" id="nav-toggle">
+          <i class="ri-menu-line nav__toggle-menu"></i>
+          <i class="ri-close-line nav__toggle-close"></i>
+        </div>
+      </div>
+
+      <!--The navigation menu links-->
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="#" class="nav__link">Home</a></li>
+          <li><a href="#" class="nav__link">Top Locations</a></li>
+
+          <!--dropdown showing filters and users can customise the data view-->
+          <li class="dropdown__item">
+            <div class="nav__link dropdown__button">
+              Search Trips <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+
+            <div class="dropdown__container">
+              <div class="dropdown__content">
+                <!-- Trip search section -->
+                <div class="trip-search">
+
+                    <h3>Search Trips</h3>
+
+                    <div class="search-layout">
+
+                        <!-- LEFT SIDE -->
+                        <div class="search-left">
+                        <div class="search-group">
+                            <label for="searchMethod">Search by:</label>
+                            <select id="searchMethod">
+                            <option value="">Select Method</option>
+                            <option value="payment">Payment Method</option>
+                            <option value="date">Date Range</option>
+                            <option value="fare">Fare Amount</option>
+                            <option value="distance">Distance</option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <!-- RIGHT SIDE -->
+                        <div class="search-right">
+
+                        <div class="search-group hidden" id="paymentSearch">
+                            <label>Payment Method</label>
+                            <select id="paymentType">
+                            <option value="1">Credit Card</option>
+                            <option value="2">Cash</option>
+                            <option value="3">No Charge</option>
+                            <option value="4">Dispute</option>
+                            <option value="5">Transfer</option>
+                            <option value="6">Voided Trip</option>
+                            </select>
+                        </div>
+
+                        <div class="search-group hidden" id="dateSearch">
+                            <label>From</label>
+                            <input type="date" id="startDate">
+                            <label>To</label>
+                            <input type="date" id="endDate">
+                        </div>
+
+                        <div class="search-group hidden" id="fareSearch">
+                            <label>Min Fare</label>
+                            <input type="number" id="minFare">
+                            <label>Max Fare</label>
+                            <input type="number" id="maxFare">
+                        </div>
+
+                        <div class="search-group hidden" id="distanceSearch">
+                            <label>Min Distance</label>
+                            <input type="number" id="minDistance">
+                            <label>Max Distance</label>
+                            <input type="number" id="maxDistance">
+                        </div>
+
+                        </div>
+
+                    </div>
+
+                    <button id="searchBtn">Search</button>
+
+                    </div>
+
+
+
+               
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+	<main>
+		<div class="dashboard" style="padding-top: 3%; padding-bottom: 1%;">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Total Trips</div>
+          <div class="card-value" id="totalTrips" >loading...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Total Revenue</div>
+          <div class="card-value" id="totalRevenue"  >loading...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Average Fare</div>
+          <div class="card-value" id="avgFare">loading...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Avg. Distance</div>
+          <div class="card-value" id="avgDistance" >loading...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <div class="card-title">Average Speed</div>
+          <div class="card-value" id="avgSpeed" >loading...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard data analysis section -->
+    <section class="analytics-section">
+      <div class="analytics-layout">
+
+        <!-- LEFT COL: two large graph boxes -->
+        <div class="analytics-graphs">
+
+          <div class="graph-box">
+            <div class="graph-box__header">
+              <span class="graph-box__title">Trips Over Time</span>
+              <span class="graph-box__badge">Daily</span>
+            </div>
+            <div class="graph-box__body">
+              <div class="graph-placeholder">
+                <div class="graph-placeholder__bars">
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                  <div class="graph-placeholder__bar"></div>
+                </div>
+                <span class="graph-placeholder__label">Chart loads with data</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="graph-box">
+            <div class="graph-box__header">
+              <span class="graph-box__title">Fare Distribution</span>
+              <span class="graph-box__badge">Weekly</span>
+            </div>
+            <div class="graph-box__body">
+              <div class="graph-placeholder graph-placeholder--line">
+                <svg class="line-preview" viewBox="0 0 300 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="0,60 30,45 60,55 90,30 120,40 150,20 180,35 210,15 240,28 270,18 300,10"
+                    stroke="hsl(220,68%,54%)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <polyline points="0,60 30,45 60,55 90,30 120,40 150,20 180,35 210,15 240,28 270,18 300,10 300,80 0,80"
+                    fill="hsl(220,68%,54%)" fill-opacity="0.08"/>
+                </svg>
+                <span class="graph-placeholder__label">Chart loads with data</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COL: two small stat cards -->
+        <div class="analytics-stats">
+
+          <div class="stat-card">
+            <div class="stat-card__icon-row">
+              <div class="stat-card__icon"><i class="ri-time-line"></i></div>
+              <span class="stat-card__title">Peak Hours</span>
+            </div>
+            <div class="stat-card__value">6–9 PM</div>
+            <div class="stat-card__sub">Highest demand window across all boroughs</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__icon-row">
+              <div class="stat-card__icon"><i class="ri-calendar-check-line"></i></div>
+              <span class="stat-card__title">Busiest Day</span>
+            </div>
+            <div class="stat-card__value">Friday</div>
+            <div class="stat-card__sub">Avg. 312 trips — 18% above weekly mean</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    
+<!-- ── Section heading ── -->
+<div class="tables-heading">
+  <h2 class="tables-heading__title">Top 10 Locations</h2>
+  <p class="tables-heading__sub">Ranked by trip volume across all boroughs</p>
+</div>
+
+<!-- ── Three-table grid ── -->
+<div class="tables-grid">
+
+  <!-- TABLE 1: Pickup Locations -->
+  <div class="loc-table-card">
+    <div class="loc-table-card__header">
+      <div class="loc-table-card__icon"><i class="ri-map-pin-2-fill"></i></div>
+      <div>
+        <div class="loc-table-card__title">Pickup Locations</div>
+        <div class="loc-table-card__badge">Top 10</div>
+      </div>
+    </div>
+    <div class="loc-table-card__body">
+      <table class="loc-table" id="topPickupsTable">
+        <thead>
+          <tr>
+            <th>Zone Name</th>
+            <th>Trips</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="2">Loading data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TABLE 2: Dropoff Locations -->
+  <div class="loc-table-card">
+    <div class="loc-table-card__header">
+      <div class="loc-table-card__icon loc-table-card__icon--drop"><i class="ri-map-pin-add-fill"></i></div>
+      <div>
+        <div class="loc-table-card__title">Dropoff Locations</div>
+        <div class="loc-table-card__badge loc-table-card__badge--drop">Top 10</div>
+      </div>
+    </div>
+    <div class="loc-table-card__body">
+      <table class="loc-table" id="topDropsTable">
+        <thead>
+          <tr>
+            <th>Zone Name</th>
+            <th>Trips</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="2">Loading data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  
+
+  <!-- TABLE 3: Busiest Routes -->
+  <div class="loc-table-card">
+    <div class="loc-table-card__header">
+      <div class="loc-table-card__icon loc-table-card__icon--route"><i class="ri-route-fill"></i></div>
+      <div>
+        <div class="loc-table-card__title">Avg. Fare by Borough</div>
+      </div>
+    </div>
+    <div class="loc-table-card__body">
+      <table class="loc-table" id="avgFareByBoroughTable">
+        <thead>
+          <tr>
+            <th>Borough</th>
+            <th>Avg Fare</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="2">Loading data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+	</main>
+
+  <script src="script.js"></script>
+  <script src="api-data.js"></script>
+</body>
+</html>
