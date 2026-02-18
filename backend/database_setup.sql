@@ -14,6 +14,7 @@ SET sql_mode = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION';
 
 
 # Creating the vendors table
+
 CREATE TABLE IF NOT EXISTS vendors (
     vendor_id INT PRIMARY KEY COMMENT 'Storing the vendor ID which can have more entities in the future'
 ) ENGINE=InnoDB;
@@ -111,4 +112,3 @@ CREATE TABLE IF NOT EXISTS trips (
     INDEX idx_trips_dropoff_loc_tripid (dropoff_location_id, fare_amount)
 
 ) ENGINE=InnoDB;
-

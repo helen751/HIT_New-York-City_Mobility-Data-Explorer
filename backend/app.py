@@ -179,6 +179,115 @@ def filter_trips():
 
     return jsonify(data)
 
+@app.route("/api/trips-over-time")
+def trips_over_time():
+
+    start = request.args.get("start")
+    end = request.args.get("end")
+    group = request.args.get("group", "hour")  # "hour" or "day"
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if group == "day":
+        query = """
+            SELECT 
+                DATE(pickup_datetime) as time_label,
+                COUNT(*) as trip_count
+            FROM trips
+            WHERE pickup_datetime BETWEEN %s AND %s
+            GROUP BY DATE(pickup_datetime)
+            ORDER BY time_label
+        """
+    else:
+        query = """
+            SELECT 
+                HOUR(pickup_datetime) as time_label,
+                COUNT(*) as trip_count
+            FROM trips
+            WHERE pickup_datetime BETWEEN %s AND %s
+            GROUP BY HOUR(pickup_datetime)
+            ORDER BY time_label
+        """
+
+    cursor.execute(query, (start, end))
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+
+@app.route("/api/fare-distribution")
+def fare_distribution():
+
+    start = request.args.get("start")
+    end = request.args.get("end")
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT 
+            FLOOR(fare_amount / 5) * 5 AS fare_range,
+            COUNT(*) AS trip_count
+        FROM trips
+        WHERE pickup_datetime BETWEEN %s AND %s
+        GROUP BY fare_range
+        ORDER BY fare_range
+    """
+
+    cursor.execute(query, (start, end))
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+
+@app.route("/api/peak-times")
+def peak_times():
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    # Peak hour
+    cursor.execute("""
+        SELECT 
+            HOUR(pickup_datetime) as peak_hour,
+            COUNT(*) as trip_count
+        FROM trips
+        GROUP BY peak_hour
+        ORDER BY trip_count DESC
+        LIMIT 1
+    """)
+
+    peak_hour = cursor.fetchone()
+
+    # Peak day
+    cursor.execute("""
+        SELECT 
+            DATE(pickup_datetime) as peak_day,
+            COUNT(*) as trip_count
+        FROM trips
+        GROUP BY peak_day
+        ORDER BY trip_count DESC
+        LIMIT 1
+    """)
+
+    peak_day = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({
+        "peak_hour": peak_hour,
+        "peak_day": peak_day
+    })
+
+
 
 
 @app.route("/api/top-expensive")
@@ -198,6 +307,29 @@ def top_expensive():
     conn.close()
 
     return jsonify(sorted_trips[:k])
+
+
+@app.route("/api/payment-types")
+def get_payment_types():
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT 
+            payment_type_id,
+            description
+        FROM payment_types
+        ORDER BY payment_type_id
+    """)
+
+    result = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(result)
+
 
 
 if __name__ == "__main__":
