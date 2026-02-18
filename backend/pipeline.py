@@ -49,10 +49,8 @@ def clean_trips(trips):
 
     # Convert datetime columns from strings to datetime objects, coercing errors to NaT
 
-    trips["tpep_pickup_datetime"] = pd.to_datetime(
-    trips["tpep_pickup_datetime"], errors="coerce")
-    trips["tpep_dropoff_datetime"] = pd.to_datetime(
-    trips["tpep_dropoff_datetime"], errors="coerce")
+    trips["tpep_pickup_datetime"] = pd.to_datetime( trips["tpep_pickup_datetime"], errors="coerce")
+    trips["tpep_dropoff_datetime"] = pd.to_datetime( trips["tpep_dropoff_datetime"], errors="coerce")
 
     trips = trips.dropna(subset=["tpep_pickup_datetime", "tpep_dropoff_datetime"])
 
