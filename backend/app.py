@@ -66,19 +66,25 @@ def top_locations():
     cursor = conn.cursor(dictionary=True)
 
     query = f"""
-        SELECT 
-            l.zone_name as zone,
-            b.borough_name as borough,
-            COUNT(*) AS trip_count
-        FROM trips t
-        JOIN locations l ON t.{column} = l.location_id
-        JOIN boroughs b ON l.borough_id = b.borough_id
-        GROUP BY t.{column}
-        ORDER BY trip_count DESC
-        LIMIT {limit}
+        SELECT l.zone_name as zone,
+               b.borough_name as borough,
+               summary.trip_count
+        FROM (
+            SELECT {column} AS location_id,
+                   COUNT(*) AS trip_count
+            FROM trips
+            GROUP BY {column}
+            ORDER BY trip_count DESC
+            LIMIT %s
+        ) AS summary
+        JOIN locations l 
+            ON summary.location_id = l.location_id
+        JOIN boroughs b 
+            ON l.borough_id = b.borough_id
+        ORDER BY summary.trip_count DESC;
     """
 
-    cursor.execute(query)
+    cursor.execute(query, (limit,))
     result = cursor.fetchall()
 
     cursor.close()
@@ -93,15 +99,21 @@ def avg_fare_by_borough():
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT 
-            b.borough_name,
-            s.avg_fare,
-            s.trip_count,
-            s.last_updated
-        FROM borough_fare_summary s
+        SELECT b.borough_name,
+               summary.avg_fare,
+               summary.trip_count
+        FROM (
+            SELECT l.borough_id,
+                   AVG(t.fare_amount) AS avg_fare,
+                   COUNT(*) AS trip_count
+            FROM trips t
+            JOIN locations l 
+                ON t.pickup_location_id = l.location_id
+            GROUP BY l.borough_id
+        ) AS summary
         JOIN boroughs b 
-            ON s.borough_id = b.borough_id
-        ORDER BY s.avg_fare DESC
+            ON summary.borough_id = b.borough_id
+        ORDER BY summary.avg_fare DESC;
     """)
 
     result = cursor.fetchall()
