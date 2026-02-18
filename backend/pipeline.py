@@ -49,10 +49,24 @@ def clean_trips(trips):
 
     # Convert datetime columns from strings to datetime objects, coercing errors to NaT
 
-    trips["tpep_pickup_datetime"] = pd.to_datetime( trips["tpep_pickup_datetime"], errors="coerce")
-    trips["tpep_dropoff_datetime"] = pd.to_datetime( trips["tpep_dropoff_datetime"], errors="coerce")
+    trips["tpep_pickup_datetime"] = pd.to_datetime(
+    trips["tpep_pickup_datetime"], errors="coerce")
+    trips["tpep_dropoff_datetime"] = pd.to_datetime(
+    trips["tpep_dropoff_datetime"], errors="coerce")
 
     trips = trips.dropna(subset=["tpep_pickup_datetime", "tpep_dropoff_datetime"])
+
+    start_date = pd.Timestamp("2018-12-01")
+    end_date = pd.Timestamp("2019-02-01 23:59:59")
+
+    before_date_filter = len(trips)
+
+    trips = trips[ (trips["tpep_pickup_datetime"] >= start_date) &(trips["tpep_pickup_datetime"] <= end_date)]
+
+    date_removed = before_date_filter - len(trips)
+
+    print(f"Removed {date_removed} rows outside 2019 date range.")
+
 
     # Drop congestion_surcharge column 
 
