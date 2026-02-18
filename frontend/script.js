@@ -118,3 +118,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
   counters.forEach(counter => observer.observe(counter));
 });
+
+// Add this after DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  const ctx = document.getElementById('fareDistanceChart')?.getContext('2d');
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [{
+        label: 'Trips',
+        data: [], // ← fill with real {x: distance, y: fare} objects
+        backgroundColor: 'rgba(34, 139, 230, 0.6)',
+        borderColor: 'rgba(34, 139, 230, 0.9)',
+        pointRadius: 5,
+        pointHoverRadius: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { title: { display: true, text: 'Distance (miles)' } },
+        y: { title: { display: true, text: 'Fare ($)' } }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => `$${ctx.parsed.y.toFixed(2)} for ${ctx.parsed.x.toFixed(1)} mi`
+          }
+        }
+      }
+    }
+  });
+});

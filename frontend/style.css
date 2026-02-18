@@ -731,16 +731,3 @@ main {
   white-space: nowrap;
 }
 
-/* ─── Borough tags ────────────────────────────── */
-.borough-tag {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 20px;
-}
-.borough-tag.manhattan { background: hsl(220,68%,93%); color: hsl(220,60%,40%); }
-.borough-tag.queens    { background: hsl(160,55%,90%); color: hsl(160,55%,30%); }
-.borough-tag.brooklyn  { background: hsl(280,50%,92%); color: hsl(280,45%,38%); }
-.borough-tag.bronx     { background: hsl(35,90%,91%);  color: hsl(35,80%,35%);  }
-.borough-tag.staten    { background: hsl(0,60%,92%);   color: hsl(0,55%,38%);   }
