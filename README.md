@@ -30,7 +30,7 @@ This project demonstrates full-stack data engineering, backend API development, 
 
 ## Architecture Layers
 
-### 1️⃣ Raw Data
+### 1️⃣ Raw Data 
 
 * `yellow_tripdata_2019-01.csv`
 * `taxi_zone_lookup.csv`
@@ -78,7 +78,7 @@ Tables:
 
 ---
 
-# 📂 Project Folder Structure
+# Project Folder Structure
 
 ```
 HIT_New-York-City_Mobility-Data-Explorer/
@@ -140,6 +140,9 @@ cd HIT_New-York-City_Mobility-Data-Explorer
 ```
 
 ---
+# Setup the raw Data
+(<a href="https://drive.google.com/drive/folders/1F5MqfprZ_0vp-MfnJ0mx-5H14SV9G7JL?usp=drive_link"> Download full data here </a>)
+## Move the downloaded data to (backend/data)
 
 # Step 2 — Install MySQL
 
