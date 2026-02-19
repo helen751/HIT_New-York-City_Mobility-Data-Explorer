@@ -3,6 +3,9 @@
 A full-stack data engineering and analytics platform that processes NYC taxi trip data, cleans, stores it in MySQL, exposes insights via a Flask REST API, and visualizes analytics through an interactive web dashboard.
 
 ---
+## <a href="https://drive.google.com/file/d/1u1yYT0OA26kcF0p7rtxkvTZbDtYk--BH/view?usp=drive_link">Watch the Demo Video</a>
+
+## <a href="toluwanistu.tech">Deployment Link Here (https://toluwanistu.tech)</a>
 
 # 📌 Project Overview
 
