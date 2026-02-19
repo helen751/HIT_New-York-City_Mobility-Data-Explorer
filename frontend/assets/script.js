@@ -1,4 +1,4 @@
-/*=============== SHOW MENU ===============*/
+/*Menu toggle on mobile logic*/
 const showMenu = (toggleId, navId) =>{
    const toggle = document.getElementById(toggleId),
          nav = document.getElementById(navId)
@@ -13,13 +13,13 @@ const showMenu = (toggleId, navId) =>{
 
 showMenu('nav-toggle','nav-menu')
 
-/*=============== SHOW DROPDOWN MENU ===============*/
-const dropdownItems = document.querySelectorAll('.dropdown__item')
+/* search dropdown logic*/
+const dropdownItems = document.querySelectorAll('.drop-down_item')
 
 // 1. Select each dropdown item
-const dropdownItem = document.querySelector('.dropdown__item');
-const dropdownButton = document.querySelector('.dropdown__button');
-const dropdownContainer = document.querySelector('.dropdown__container');
+const dropdownItem = document.querySelector('.drop-down_item');
+const dropdownButton = document.querySelector('.drop-down_button');
+const dropdownContainer = document.querySelector('.drop-down_container');
 
 // open when button clicked
 dropdownButton.addEventListener('click', function (e) {
@@ -27,7 +27,7 @@ dropdownButton.addEventListener('click', function (e) {
     dropdownItem.classList.toggle('show-dropdown');
 });
 
-// close when clicking outside
+// close when clicking outside the dropdown
 document.addEventListener('click', function (e) {
     if (!dropdownItem.contains(e.target)) {
         dropdownItem.classList.remove('show-dropdown');
@@ -107,4 +107,33 @@ searchMethod.addEventListener("change", function () {
     sections[this.value].classList.remove("hidden");
   }
 });
+
+
+// toggle nav links to show different sections of the dashboard
+function showHome() {
+    document.getElementById("dashboard-s").style.display = "block";
+    document.getElementById("top10locations").style.display = "none";
+    document.getElementById("map-section").style.display = "none";
+}
+
+function showTopLocations() {
+    document.getElementById("dashboard-s").style.display = "none";
+    document.getElementById("top10locations").style.display = "block";
+    document.getElementById("map-section").style.display = "none";
+}
+
+let mapInitialized = false;
+function showmap() {
+    document.getElementById("dashboard-s").style.display = "none";
+    document.getElementById("top10locations").style.display = "none";
+    document.getElementById("map-section").style.display = "block";
+
+    if (!mapInitialized) {
+        initMap();
+        renderTopPickupMarkers();
+        mapInitialized = true;
+    } else {
+        map.invalidateSize();
+    }
+}
 

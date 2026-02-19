@@ -33,6 +33,28 @@ def get_trips():
 
     return jsonify(data)
 
+@app.route("/api/available-dates")
+
+# loading available dates for the date picker dropdown
+def available_dates():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT DISTINCT DATE(pickup_datetime) as trip_date
+        FROM trips
+        ORDER BY trip_date DESC
+    """)
+
+    dates = [str(row[0]) for row in cursor.fetchall()]
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(dates)
+
+
 @app.route("/api/summary")
 def summary():
 
@@ -125,22 +147,20 @@ def avg_fare_by_borough():
 
 
 @app.route("/api/filter")
+
+# filtering trips based on various parameters for the search section
 def filter_trips():
 
-    # Get query parameters from URL
     start = request.args.get("start")
     end = request.args.get("end")
-
-    min_fare = request.args.get("min_fare", 0)
-    max_fare = request.args.get("max_fare", 1000)
-
+    min_fare = request.args.get("min_fare")
+    max_fare = request.args.get("max_fare")
     passengers = request.args.get("passengers")
-    min_distance = request.args.get("min_distance", 0)
-    max_distance = request.args.get("max_distance", 1000)
-
+    min_distance = request.args.get("min_distance")
+    max_distance = request.args.get("max_distance")
+    payment_type_id = request.args.get("payment_type_id")
     sort = request.args.get("sort", "pickup_datetime")
 
-    # Whitelist allowed sorting columns (prevents SQL injection)
     allowed_sort = [
         "pickup_datetime",
         "fare_amount",
@@ -154,22 +174,31 @@ def filter_trips():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
-    query = """
-        SELECT *
-        FROM trips
-        WHERE pickup_datetime BETWEEN %s AND %s
-        AND fare_amount BETWEEN %s AND %s
-        AND trip_distance BETWEEN %s AND %s
-    """
+    query = "SELECT * FROM trips WHERE 1=1"
+    params = []
 
-    params = [start, end, min_fare, max_fare, min_distance, max_distance]
+    # Add filters only if they exist
+    if start and end:
+        query += " AND pickup_datetime BETWEEN %s AND %s"
+        params.extend([start, end])
 
-    # Optional passenger filter
+    if min_fare and max_fare:
+        query += " AND fare_amount BETWEEN %s AND %s"
+        params.extend([min_fare, max_fare])
+
+    if min_distance and max_distance:
+        query += " AND trip_distance BETWEEN %s AND %s"
+        params.extend([min_distance, max_distance])
+
     if passengers:
         query += " AND passenger_count = %s"
         params.append(passengers)
 
-    query += f" ORDER BY {sort} LIMIT 500"
+    if payment_type_id:
+        query += " AND payment_type_id = %s"
+        params.append(payment_type_id)
+
+    query += f" ORDER BY {sort} LIMIT 100"
 
     cursor.execute(query, params)
     data = cursor.fetchall()
@@ -179,12 +208,13 @@ def filter_trips():
 
     return jsonify(data)
 
+
 @app.route("/api/trips-over-time")
 def trips_over_time():
 
     start = request.args.get("start")
     end = request.args.get("end")
-    group = request.args.get("group", "hour")  # "hour" or "day"
+    group = request.args.get("group", "hour") 
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -247,7 +277,44 @@ def fare_distribution():
     return jsonify(data)
 
 
+@app.route("/api/time-metrics")
+
+# calculating metrics for total trips, revenue, and average fare over time for the line graph
+def time_metrics():
+
+    metric = request.args.get("metric", "trips")
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    if metric == "revenue":
+        select_part = "SUM(total_amount) AS value"
+    elif metric == "avg_fare":
+        select_part = "AVG(fare_amount) AS value"
+    else:
+        select_part = "COUNT(*) AS value"
+
+    query = f"""
+        SELECT 
+            DATE(pickup_datetime) AS trip_date,
+            {select_part}
+        FROM trips
+        GROUP BY DATE(pickup_datetime)
+        ORDER BY trip_date;
+    """
+
+    cursor.execute(query)
+    data = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(data)
+
+
 @app.route("/api/peak-times")
+
+# calculating peak hours and days based on total trip counts across all days
 def peak_times():
 
     conn = get_connection()
@@ -287,6 +354,37 @@ def peak_times():
         "peak_day": peak_day
     })
 
+@app.route("/api/busiest-weekday")
+
+# calculating the busiest weekday based on average daily trips across the db
+def busiest_weekday():
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT 
+            weekday,
+            AVG(daily_trip_count) AS avg_daily_trips
+        FROM (
+            SELECT 
+                DAYOFWEEK(pickup_datetime) AS weekday_num,
+                DAYNAME(pickup_datetime) AS weekday,
+                COUNT(*) AS daily_trip_count
+            FROM trips
+            GROUP BY DATE(pickup_datetime), weekday_num, weekday
+        ) AS daily_summary
+        GROUP BY weekday_num, weekday
+        ORDER BY avg_daily_trips DESC
+        LIMIT 1;
+    """)
+
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify(result)
 
 
 
