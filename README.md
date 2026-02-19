@@ -122,7 +122,7 @@ HIT_New-York-City_Mobility-Data-Explorer/
 
 ---
 
-# ⚙️ Installation & Environment Setup
+# Installation & Environment Setup
 
 ## Prerequisites
 
@@ -206,7 +206,7 @@ mysql -u hit_user -p hit_urban_mobility_db < backend/database_setup.sql
 
 ---
 
-# 📦 Step 5 — Install Python Dependencies
+# Step 5 — Install Python Dependencies
 
 Create virtual environment:
 
@@ -328,7 +328,7 @@ http://127.0.0.1:5000
 
 ---
 
-# 🌐 Step 9 — Launch Frontend
+# Step 9 — Launch Frontend
 
 Option 1 — Open directly:
 
@@ -364,7 +364,7 @@ connection = mysql.connector.connect(
 
 ---
 
-# 📊 Application Features
+# Application Features
 
 * ETL data cleaning & anomaly logging
 * Relational database schema
@@ -376,7 +376,7 @@ connection = mysql.connector.connect(
 
 ---
 
-# 🧰 Technologies Used
+# Technologies Used
 
 ## Backend
 
@@ -413,7 +413,7 @@ connection = mysql.connector.connect(
 * Progress logs are printed so the user can monitor execution.
 * Errors are handled safely, including missing files and connection issues.
 
-# 👩‍💻 Authors
+#  Authors
 
 Developed by:
 
@@ -423,7 +423,7 @@ Developed by:
 
 ---
 
-# 📄 License
+#  License
 
 This project is developed for educational and academic purposes by HIT Group (African Leadership University, Rwanda).
 
