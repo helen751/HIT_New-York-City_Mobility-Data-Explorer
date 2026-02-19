@@ -168,7 +168,7 @@ Download from:
 
 ---
 
-# 🔐 Step 3 — Configure MySQL
+# Step 3 — Configure MySQL
 
 Login to MySQL:
 
